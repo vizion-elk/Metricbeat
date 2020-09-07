@@ -42,7 +42,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
     Set-ExecutionPolicy Unrestricted
 
     #Change Directory to metricbeat
-    Set-Location -Path 'c:\Metricbeat-master\metricbeat'
+    Set-Location -Path 'c:\Metricbeat-7.7.0\metricbeat'
 
     #Stops metricbeat from running
     Stop-Service -Force metricbeat
@@ -55,7 +55,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
 
     "`nUninstalling Metricbeat Now..."
 
-    $Target = "C:\Metricbeat-master"
+    $Target = "C:\Metricbeat-7.7.0"
 
     Get-ChildItem -Path $Target -Recurse -force |
         Where-Object { -not ($_.pscontainer)} |
