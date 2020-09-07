@@ -42,7 +42,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
 
     "`nYou are running Powershell with full privilege`n"
 
-    Set-Location -Path 'c:\metricbeat-master\metricbeat'
+    Set-Location -Path 'c:\metricbeat-6.5.4\metricbeat'
     Set-ExecutionPolicy Unrestricted
     
     "Metricbeat Execution policy set - Success`n"
