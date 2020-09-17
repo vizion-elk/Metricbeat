@@ -165,8 +165,8 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
             Set-Content metricbeat.yml
 
     #Runs the config test to make sure all data has been inputted correctly
-    .\metricbeat.exe -e -configtest
-
+    .\metricbeat.exe test config
+    .\metricbeat.exe test output
     #Load Metricbeat Preconfigured Dashboards
     .\metricbeat.exe setup --dashboards
 
