@@ -35,6 +35,7 @@
 Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser	
 Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope LocalMachine
 Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope Process
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 
@@ -42,14 +43,24 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
 
     "`nYou are running Powershell with full privilege`n"
 
-    Set-Location -Path 'c:\metricbeat-7.7.0\metricbeat'
-    Set-ExecutionPolicy Unrestricted
-    
+    #Change Folder to metricbeat
+    $currentLocation = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+
+    If ( -Not (Test-Path -Path "$currentLocation\metricbeat") )
+    {
+        Write-Host -Object "Path $currentLocation\metricbeat does not exit, exiting..." -ForegroundColor Red
+        Exit 1
+    }
+    Else
+    {
+        Set-Location -Path "$currentLocation\metricbeat"
+    }
+
     "Metricbeat Execution policy set - Success`n"
 
     
     #=========== Metricbeat Credentials Form ===========#
-    "`nAdding Metricbeat Credentials`n"
+    "Adding Metricbeat Credentials`n"
 
     #GUI To Insert User Credentials
     #Pop-up Box that Adds Credentials 
@@ -167,6 +178,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
     #Runs the config test to make sure all data has been inputted correctly
     .\metricbeat.exe test config
     .\metricbeat.exe test output
+
     #Load Metricbeat Preconfigured Dashboards
     .\metricbeat.exe setup --dashboards
 
@@ -183,7 +195,7 @@ if($principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) 
     "`nMetricbeat Started. Check Kibana For The Incoming Data!"
 
     #Close Powershell window
-    Stop-Process -Id $PID
+    #Stop-Process -Id $PID
 
 }
 else {
